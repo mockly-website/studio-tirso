@@ -119,17 +119,49 @@
       function render() {
         title.textContent = MONTHS[m].charAt(0).toUpperCase() + MONTHS[m].slice(1) + " " + year;
         count.textContent = items.length + (items.length === 1 ? " scadenza" : " scadenze");
-        list.innerHTML = items.map(function (x) {
+        list.innerHTML = items.map(function (x, i) {
           var done = x.date < t;
+          var btn = done ? "" : '<button class="cal__remind" type="button" data-remind="' + i + '" aria-label="Ricordamelo: ' + x.what + ", " + fmt(x.date) + '">' +
+            '<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="13" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 8h14M7 2v4M13 2v4" stroke="currentColor" stroke-width="1.5"/></svg>Ricordamelo</button>';
           return '<li class="' + (done ? "is-done" : "") + '"><span class="cal__day">' + x.date.getDate() +
-            "<small>" + DAYS[x.date.getDay()] + (done ? " · fatta" : "") + '</small></span><span><span class="cal__what">' + x.what +
-            '</span><br><span class="cal__who">' + x.who + "</span></span></li>";
+            "<small>" + DAYS[x.date.getDay()] + (done ? " · passata" : "") + '</small></span><span><span class="cal__what">' + x.what +
+            '</span><br><span class="cal__who">' + x.who + "</span>" + btn + "</span></li>";
         }).join("");
+        current = items;
       }
       if (!animate || reduce) { render(); return; }
       list.classList.add("is-swapping");
       setTimeout(function () { render(); list.classList.remove("is-swapping"); }, 150);
     }
+
+    // "Ricordamelo": un file di calendario con promemoria tre giorni prima
+    var current = [];
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function ymd(d) { return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); }
+    list.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-remind]");
+      if (!b) return;
+      var x = current[+b.dataset.remind];
+      var next = new Date(x.date); next.setDate(next.getDate() + 1);
+      var now = new Date();
+      var stamp = now.getUTCFullYear() + pad(now.getUTCMonth() + 1) + pad(now.getUTCDate()) + "T" + pad(now.getUTCHours()) + pad(now.getUTCMinutes()) + "00Z";
+      var ics = [
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mockly//Demo Studio Tirso//IT", "CALSCALE:GREGORIAN",
+        "BEGIN:VEVENT", "UID:" + ymd(x.date) + "-" + b.dataset.remind + "@studio-tirso.demo", "DTSTAMP:" + stamp,
+        "DTSTART;VALUE=DATE:" + ymd(x.date), "DTEND;VALUE=DATE:" + ymd(next),
+        "SUMMARY:" + x.what + " (scadenza indicativa)",
+        "DESCRIPTION:Promemoria di prova dal sito dimostrativo Studio Tirso\\, realizzato da Mockly. Lo studio è inventato: controlla la data vera con il tuo commercialista.",
+        "BEGIN:VALARM", "TRIGGER:-P3D", "ACTION:DISPLAY", "DESCRIPTION:" + x.what + " fra tre giorni", "END:VALARM",
+        "END:VEVENT", "END:VCALENDAR"
+      ].join("\r\n");
+      var url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+      var a = document.createElement("a");
+      a.href = url; a.download = "scadenza-" + ymd(x.date) + ".ics";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      b.classList.add("is-done");
+      b.lastChild.textContent = "Aggiunto";
+    });
 
     grid.addEventListener("click", function (e) {
       var b = e.target.closest(".cal__month");
