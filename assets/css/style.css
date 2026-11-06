@@ -726,7 +726,7 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 .receipt dl div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 10px; padding: 10px 0; border-top: 1px dashed var(--line-mid); }
 .receipt dt { font-family: var(--mono); font-size: 0.875rem; color: var(--ink-2); padding-top: 2px; }
 .receipt dd { margin: 0; font-weight: 600; }
-.receipt dd.is-empty { color: #767b84; font-weight: 400; }
+.receipt dd.is-empty { color: #5f646d; font-weight: 400; }
 .receipt dd.is-new { animation: flash 600ms var(--ease-out); }
 @keyframes flash { from { background: var(--mark); } }
 .receipt__note { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--ink); color: var(--ink-2); font-size: 0.9375rem; }
