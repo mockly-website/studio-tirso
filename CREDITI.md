@@ -30,5 +30,4 @@ Anteprima social (`assets/img/anteprima-social.png`) e icone: composizione grafi
 
 File WOFF2 ospitati in `assets/fonts/`, sottoinsieme latino, scaricati da Google Fonts.
 
-- **Instrument Sans** (variabile, pesi 400–700, larghezza 75–100) — © The Instrument Sans Project Authors, SIL Open Font License 1.1.
-- **Geist Mono** (variabile, pesi 400–500) — © Vercel, SIL Open Font License 1.1.
+- **Archivo** (variabile, pesi 100–900, larghezza 62–125) — © The Archivo Project Authors, SIL Open Font License 1.1.
