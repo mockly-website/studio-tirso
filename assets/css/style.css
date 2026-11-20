@@ -205,7 +205,7 @@ body.is-locked { overflow: hidden; }
 }
 @media (min-width: 64em) {
   .hero { padding: 32px 0 96px; }
-  .hero__grid { grid-template-columns: 1fr 1.05fr; gap: 56px; align-items: end; }
+  .hero__grid { grid-template-columns: .85fr 1.15fr; gap: 48px; align-items: end; }
   .shelf {
     grid-template-columns: repeat(7, 1fr); align-items: end; gap: 6px; height: 470px;
     padding: 0 6px; border-bottom: 10px solid #B9BBB4;
@@ -219,11 +219,16 @@ body.is-locked { overflow: hidden; }
   .spine:hover, .spine:focus-visible { transform: translateY(-12px); }
   .spine__label {
     writing-mode: vertical-rl; transform: rotate(180deg);
-    display: block; align-self: start; margin-top: 18px; max-height: calc(100% - 30px); padding: 14px 4px; white-space: nowrap; overflow: hidden;
+    display: grid; gap: 4px; align-self: start; margin-top: 16px; padding: 14px 7px;
+    white-space: nowrap; box-shadow: 0 0 0 1px rgba(0,0,0,.08);
   }
-  .spine__price { margin-top: 0; margin-block-start: 0; padding-inline-start: 8px; }
-  .spine__name { font-size: 17px; }
-  .spine__price { font-size: 15px; }
+  .spine__name { font-size: 19px; font-weight: 750; font-stretch: 72%; line-height: 1.1; }
+  .spine__price { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+}
+
+@media (min-width: 64em) and (max-width: 79.99em) {
+  .hero__grid { grid-template-columns: 1fr; }
+  .shelf { height: 400px; }
 }
 
 /* Le frasi con cui arrivate */
@@ -272,7 +277,7 @@ body.is-locked { overflow: hidden; }
 .cal__what { font-weight: 700; font-size: 18px; }
 .cal__who { font-size: 15px; color: var(--muted); }
 .cal__remind {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; min-height: 44px; padding: 0 12px;
+  display: flex; width: fit-content; align-items: center; gap: 8px; margin-top: 12px; min-height: 44px; padding: 0 12px;
   background: var(--paper); border: 2px solid var(--ink); border-radius: 3px; font-weight: 600; font-size: 15px; cursor: pointer;
 }
 .cal__remind svg { width: 18px; height: 18px; }
